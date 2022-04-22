@@ -31,13 +31,13 @@ public:
   void move_left_wheels(int32_t voltage) {
     for (int &port_num : left_motors) {
 		// Uses C lib
-		pros::c::motor_move(port_num, -voltage * config::scale * config::modifier);
+		pros::c::motor_move_velocity(port_num, -voltage * config::scale * config::modifier);
 	}
   }
 
   void move_right_wheels(int32_t voltage) {
     for (int &port_num : right_motors) {
-      pros::c::motor_move(port_num, voltage * config::scale * config::modifier);
+      pros::c::motor_move_velocity(port_num, voltage * config::scale * config::modifier);
     }
   }
 };
