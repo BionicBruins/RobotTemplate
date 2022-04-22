@@ -10,6 +10,7 @@ namespace MotorRobot {
 namespace config {
   constexpr int max_speed = 100;
   constexpr double modifier = 2/3;
+  constexpr double scale = (200/127);
 }
 
 namespace ports {
