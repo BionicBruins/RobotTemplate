@@ -11,9 +11,11 @@ void disabled() {}
 
 void competition_initialize() {}
 
-void autonomous() {}
+void autonomous() {
+	// Put auto code here
+}
 
-namespace batmobile {
+namespace MotorRobot {
 
 class MotorSet {
 private:
@@ -25,23 +27,20 @@ public:
 
   MotorSet(std::vector<int> left_motors_ports,
            std::vector<int> right_motors_ports) {
-    left_motors = left_motors_ports;
-	  right_motors = right_motors_ports;
+    	left_motors = left_motors_ports;
+    	right_motors = right_motors_ports;
   }
 
   void move_left_wheels(int32_t voltage) {
     for (int &port_num : left_motors) {
 		// Uses C lib
-
-		double modifier = 2/3;
-		double final_result = 
-		pros::c::motor_move(port_num, -voltage);
+		pros::c::motor_move(port_num, -voltage * config::modifier);
 	}
   }
 
   void move_right_wheels(int32_t voltage) {
     for (int &port_num : right_motors) {
-      pros::c::motor_move(port_num, voltage);
+      pros::c::motor_move(port_num, voltage*config::modifier);
     }
   }
 };
@@ -69,14 +68,6 @@ public:
         pros::controller_id_e_t controller_binding) {
     binded = MotorSet(left_motors_ports, right_motors_ports);
     master = pros::Controller(controller_binding);
-  }
-
-  void kick_control() {
-	  if(master.get_digital(DIGITAL_R1)) {
-	 	pros::c::motor_move(ind_ports::messi, config::max_speed_v);
-	  } else {
-		  pros::c::motor_move(ind_ports::messi, 0);
-	  }
   }
 
   void tank_control() {
@@ -146,40 +137,25 @@ public:
   void draw(std::string text) {
 	static int myCount;
 	if (!(myCount % 25)) {
-    	master.set_text(0, 0, text);
+    		master.set_text(0, 0, text);
 	}
 	myCount ++;
   }
 };
-}; // namespace batmobile
+}; // namespace motorrobot
 
 void opcontrol() {
-  batmobile::MotorSet motors(ports::left_ports, ports::right_ports);
-  batmobile::Robot batmobile(motors, CONTROLLER_MASTER);
-  batmobile::ControllerScreen lcd(batmobile.get_controller());
+  MotorRobot::MotorSet motors(ports::left_ports, ports::right_ports);
+  MotorRobot::Robot robot(motors, CONTROLLER_MASTER);
+  MotorRobot::ControllerScreen lcd(batmobile.get_controller());
 
-  int count = 0;
   while (true) {
+    	robot.selected_control();
 
-	batmobile.get_controller().set_text(0, 0, "HELLO WORLD 1 ");
-
-
-	if(!(count % 25)) {
-		//batmobile.get_controller().set_text(0, 0, "HELLO WORLD");
+	if (batmobile.get_controller().get_digital(DIGITAL_Y)) {
+  	      batmobile.switch_control_type();
 	}
-
-    batmobile.selected_control();
-	batmobile.kick_control();
-
-    if (batmobile.get_controller().get_digital(DIGITAL_Y)) {
-      batmobile.switch_control_type();
-
-      // lcd.draw("C (Y): " + (batmobile.control_type == batmobile::ControlType::Tank) ? "Tank" : "Arcade");
-      
-    }
-
-
-	count++;
-    pros::delay(2);
+	  
+    	pros::delay(2);
   }
 }
