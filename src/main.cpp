@@ -2,9 +2,6 @@
 #include "srcMain.h"
 #include <vector>
 
-// TODO reduce power to all motors by 1/3 (motor * 2/3)
-// TODO change from voltage to velocity
-
 void initialize() {}
 
 void disabled() {}
