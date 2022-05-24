@@ -110,7 +110,7 @@ namespace MotorRobot
 		pros::delay(50);
 	}
 
-	const std::string &ControllerScreen::control_type_to_string(ControlType &control_type) {
+	std::string &ControllerScreen::control_type_to_string(ControlType &control_type) const {
 		switch (control_type) {
 			case ControlType::Tank: return "Tank";
 			case ControlType::Arcade: return "Arcade";
