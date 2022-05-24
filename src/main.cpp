@@ -7,8 +7,8 @@ namespace MotorRobot
 
 	MotorSet::MotorSet() {}
 
-	MotorSet::MotorSet(std::vector<int> &left_motors_ports,
-					   std::vector<int> &right_motors_ports)
+	MotorSet::MotorSet(std::vector<int> const& left_motors_ports,
+					   std::vector<int> const& right_motors_ports)
 	{
 		left_motors = left_motors_ports;
 		right_motors = right_motors_ports;
@@ -34,13 +34,13 @@ namespace MotorRobot
 
 	Robot::Robot() {}
 
-	Robot::Robot(MotorSet &motor_set, pros::controller_id_e_t controller_binding)
+	Robot::Robot(MotorSet const& motor_set, pros::controller_id_e_t controller_binding)
 	{
 		binded = motor_set;
 		master = pros::Controller(controller_binding);
 	}
 
-	Robot::Robot(std::vector<int> &left_motors_ports, std::vector<int> &right_motors_ports,
+	Robot::Robot(std::vector<int> const& left_motors_ports, std::vector<int> const& right_motors_ports,
 				 pros::controller_id_e_t controller_binding)
 	{
 		binded = MotorSet(left_motors_ports, right_motors_ports);
@@ -98,19 +98,19 @@ namespace MotorRobot
 
 	ControllerScreen::ControllerScreen(pros::Controller &controller) : master(controller) {}
 
-	void ControllerScreen::draw(int row, int column, std::string &text)
+	void ControllerScreen::draw(int row, int column, std::string const& text)
 	{
 		master.set_text(row, column, text);
 		pros::delay(50);
 	}
 
-	void ControllerScreen::draw(std::string &text)
+	void ControllerScreen::draw(std::string const& text)
 	{
 		master.set_text(0, 0, text);
 		pros::delay(50);
 	}
 
-	std::string &ControllerScreen::control_type_to_string(ControlType &control_type) const {
+	std::string &ControllerScreen::control_type_to_string(ControlType const& control_type) const {
 		switch (control_type) {
 			case ControlType::Tank: return "Tank";
 			case ControlType::Arcade: return "Arcade";
